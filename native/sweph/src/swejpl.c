@@ -93,7 +93,7 @@ struct jpl_save {
   char *jplfpath;
   FILE *jplfptr;
   short do_reorder;
-  double eh_cval[400]; 
+  double eh_cval[400];
   double eh_ss[3], eh_au, eh_emrat;
   int32 eh_denum, eh_ncon, eh_ipt[39];
   char ch_cnam[6*400];
@@ -106,9 +106,9 @@ struct jpl_save {
 
 static TLS struct jpl_save *js;
 
-static int state (double et, int32 *list, int do_bary, 
+static int state (double et, int32 *list, int do_bary,
 		  double *pv, double *pvsun, double *nut, char *serr);
-static int interp(double *buf, double t, double intv, int32 ncfin, 
+static int interp(double *buf, double t, double intv, int32 ncfin,
 		  int32 ncmin, int32 nain, int32 ifl, double *pv);
 static int32 fsizer(char *serr);
 static void reorder(char *x, int size, int number);
@@ -183,13 +183,13 @@ DE200	DE102		  	DE403
 static int32 fsizer(char *serr)
 {
   /* Local variables */
-  int32 ncon; 
+  int32 ncon;
   double emrat;
   int32 numde;
   double au, ss[3];
   int i, kmx, khi, nd;
   int32 ksize, lpt[3];
-  char ttl[6*14*3];	
+  char ttl[6*14*3];
   size_t nrd; /* unused, removes compile warnings */
   if ((js->jplfptr = swi_fopen(SEI_FILE_PLANET, js->jplfname, js->jplfpath, serr)) == NULL) {
     return NOT_AVAILABLE;
@@ -209,9 +209,9 @@ static int32 fsizer(char *serr)
   nrd = fread((void *) &ss[0], sizeof(double), 3, js->jplfptr);
   if (nrd != 3) return NOT_AVAILABLE;
   /* reorder ? */
-  if (ss[2] < 1 || ss[2] > 200) 
+  if (ss[2] < 1 || ss[2] > 200)
     js->do_reorder = TRUE;
-  else 
+  else
     js->do_reorder = 0;
   for (i = 0; i < 3; i++)
     js->eh_ss[i] = ss[i];
@@ -243,7 +243,7 @@ static int32 fsizer(char *serr)
   if (nrd != 1) return NOT_AVAILABLE;
   if (js->do_reorder)
     reorder((char *) &emrat, sizeof(double), 1);
-  /* ipt[i+0]: coefficients of planet i start at buf[ipt[i+0]-1] 
+  /* ipt[i+0]: coefficients of planet i start at buf[ipt[i+0]-1]
    * ipt[i+1]: number of coefficients (interpolation order - 1)
    * ipt[i+2]: number of intervals in segment */
   nrd = fread((void *) &js->eh_ipt[0], sizeof(int32), 36, js->jplfptr);
@@ -261,7 +261,7 @@ static int32 fsizer(char *serr)
   if (js->do_reorder)
     reorder((char *) &lpt[0], sizeof(int32), 3);
   /* fill librations into eh_ipt[36]..[38] */
-  for (i = 0; i < 3; ++i) 
+  for (i = 0; i < 3; ++i)
     js->eh_ipt[i + 36] = lpt[i];
   rewind(js->jplfptr);
   /*  find the number of ephemeris coefficients from the pointers */
@@ -274,16 +274,16 @@ static int32 fsizer(char *serr)
       khi = i + 1;
     }
   }
-  if (khi == 12) 
+  if (khi == 12)
     nd = 2;
   else
     nd = 3;
   ksize = (js->eh_ipt[khi * 3 - 3] + nd * js->eh_ipt[khi * 3 - 2] * js->eh_ipt[khi * 3 - 1] - 1L) * 2L;
   /*
-   * de102 files give wrong ksize, because they contain 424 empty bytes 
+   * de102 files give wrong ksize, because they contain 424 empty bytes
    * per record. Fixed by hand!
    */
-  if (ksize == 1546) 
+  if (ksize == 1546)
     ksize = 1652;
 #if 0		/* we prefer to compute ksize to be comaptible
                    with new DE releases */
@@ -319,7 +319,7 @@ static int32 fsizer(char *serr)
     return NOT_AVAILABLE;
   }
   return ksize;
-} 
+}
 
 /*
  *     This subroutine reads the jpl planetary ephemeris 

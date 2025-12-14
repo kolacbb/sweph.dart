@@ -11,7 +11,7 @@ buildscript {
 
     dependencies {
         // The Android Gradle Plugin knows how to build native code with the NDK.
-        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'com.android.tools.build:gradle:8.12.2'
     }
 }
 
@@ -32,11 +32,11 @@ android {
 
     // Bumping the plugin compileSdkVersion requires all clients of this plugin
     // to bump the version in their app.
-    compileSdkVersion 31
+    compileSdkVersion 36
 
     // Bumping the plugin ndkVersion requires all clients of this plugin to bump
     // the version in their app and to download a newer version of the NDK.
-    ndkVersion "21.1.6352462"
+    ndkVersion = "29.0.13846066"
 
     // Invoke the shared CMake build with the Android Gradle Plugin.
     externalNativeBuild {
@@ -54,11 +54,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 24
     }
 }
